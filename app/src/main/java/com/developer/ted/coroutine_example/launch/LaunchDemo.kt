@@ -1,12 +1,10 @@
 package com.developer.ted.coroutine_example.launch
 
 import android.util.Log
-import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
+import com.developer.ted.coroutine_example.MainActivity
+import kotlinx.coroutines.*
 
-object Launch {
+object LaunchDemo {
     private val TAG = "TED_TEST"
 
     fun run() {
