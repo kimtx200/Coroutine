@@ -20,7 +20,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         // LaunchDemo.run()
         // ContinuationDemo.run()
-        WithContextDemo.runForSwitchingDispatcher()
+        // WithContextDemo.runForSwitchingDispatcher()
         // AsyncDemo.run()
     }
 }
