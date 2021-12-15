@@ -5,7 +5,7 @@ import com.developer.ted.coroutine_example.MainActivity
 import kotlinx.coroutines.*
 
 object WithContextDemo {
-    fun run() {
+    fun runForException() {
         runBlocking {
             val job = launch {
                 try {
@@ -14,6 +14,8 @@ object WithContextDemo {
                         delay(500L)
                     }
                 } finally {
+                    // 이전에 실행중이던 코루틴 scope 는 exception 이 나는 순간 종료되게 됨
+                    // 이 때, 해당 scope 에서 특정 루틴을 수행 할 수 있게끔 아래와 같이 withContext 를 사용 할 수 있음
                     withContext(NonCancellable) {
                         delay(1000L)
                         Log.d(MainActivity.TAG, "I'm running finally!")
@@ -26,6 +28,22 @@ object WithContextDemo {
             job.cancelAndJoin()
             Log.d(MainActivity.TAG, "Now i can quit ;)")
         }
+    }
 
+    @OptIn(DelicateCoroutinesApi::class)
+    fun runForSwitchingDispatcher() {
+        GlobalScope.launch(Dispatchers.Default) {
+            Log.d(MainActivity.TAG, "IO Dispatcher is activated")
+            delay(1000L)
+
+            withContext(Dispatchers.Main) {
+                Log.d(MainActivity.TAG, "Main Dispatcher is activated")
+                updateUI()
+            }
+        }
+    }
+
+    private fun updateUI() {
+        Log.d(MainActivity.TAG, "Update UI")
     }
 }
