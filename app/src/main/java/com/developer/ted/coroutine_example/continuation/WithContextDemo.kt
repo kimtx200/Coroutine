@@ -33,9 +33,10 @@ object WithContextDemo {
     @OptIn(DelicateCoroutinesApi::class)
     fun runForSwitchingDispatcher() {
         GlobalScope.launch(Dispatchers.Default) {
+            ensureActive() // 해당 job 이 active 한 상태인지를 체크한다. 아닐경우, CancellationException() 을 던짐
+
             Log.d(MainActivity.TAG, "IO Dispatcher is activated")
             delay(1000L)
-
             withContext(Dispatchers.Main) {
                 Log.d(MainActivity.TAG, "Main Dispatcher is activated")
                 updateUI()
