@@ -2,7 +2,9 @@ package com.developer.ted.coroutine_example.supervisor_job
 
 import android.util.Log
 import com.developer.ted.coroutine_example.MainActivity
-import kotlinx.coroutines.*
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 object SupervisorJobTest {
 
@@ -10,7 +12,7 @@ object SupervisorJobTest {
         // Job1
         coroutineScope {
             // Job1-1
-            launch(SupervisorJob()) {
+            launch {
                 delay(1000)
                 throw Exception("[Job1-1] cause runtime exception here :(")
             }
@@ -31,20 +33,6 @@ object SupervisorJobTest {
         coroutineScope {
             delay(1500)
             Log.d(MainActivity.TAG, "[Job2] executed")
-        }
-    }
-
-    private suspend fun job1_1(): Int = coroutineScope {
-        runCatching {
-            delay(1000)
-            val random = 2 // (1..3).random()
-            if (random == 2) {
-                throw Exception("[Job1-1] cause runtime exception here :(")
-            } else {
-                random
-            }
-        }.getOrElse {
-            Log.e(MainActivity.TAG, it.message.toString())
         }
     }
 }

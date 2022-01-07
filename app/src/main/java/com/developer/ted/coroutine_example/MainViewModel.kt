@@ -5,16 +5,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.developer.ted.coroutine_example.supervisor_job.SupervisorJobTest
 import kotlinx.coroutines.CoroutineExceptionHandler
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class MainViewModel : ViewModel() {
-    private val exceptionHandler = CoroutineExceptionHandler { coroutineContext, throwable ->
-        Log.e(MainActivity.TAG, throwable.message.toString())
+    private val exceptionHandler by lazy {
+        CoroutineExceptionHandler { _, throwable -> handleException(throwable) }
     }
 
-    fun test() {
-        viewModelScope.launch(exceptionHandler + Dispatchers.Main) { // combined coroutine context
+    fun run() {
+        viewModelScope.launch(exceptionHandler) { // combined coroutine context
             // LaunchDemo.run()
             // ContinuationDemo.run()
             // WithContextDemo.runForSwitchingDispatcher()
@@ -22,5 +21,9 @@ class MainViewModel : ViewModel() {
             // CancellationDemo.cancelAsync()
             SupervisorJobTest.exceptionExample()
         }
+    }
+
+    private fun handleException(e: Throwable) {
+        Log.e(MainActivity.TAG, e.message.toString())
     }
 }
